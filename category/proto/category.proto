@@ -1,0 +1,76 @@
+syntax = "proto3";
+
+package category;
+
+option go_package = "./proto;category";
+
+service Category {
+	rpc CreateCategory(CategoryRequest) returns (CreateCategoryResponse) {}
+	rpc UpdateCategory(CategoryRequest) returns (UpdateCategoryResponse) {}
+	rpc DeleteCategory(DeleteCategoryRequest) returns (DeleteCategoryResponse) {}
+	rpc FindCategoryByName(FindByNameRequest) returns (CategoryResponse) {}
+	rpc FindCategoryByID(FindByIDRequest) returns (CategoryResponse) {}
+	rpc FindCategoryByLevel(FindByLevelRequest) returns (FindAllResponse) {}
+	rpc FindCategoryByParent(FindByParentRequest) returns (FindAllResponse) {}
+	rpc FindAllCategory(FindAllRequest) returns (FindAllResponse) {}
+}
+
+message CategoryRequest {
+	string category_name = 1;
+	uint32 category_level = 2;
+	int64 category_parent = 3;
+	string category_img = 4;
+	string category_description = 5;
+}
+
+message CreateCategoryResponse {
+	string message = 1;
+	int64 category_id = 2;
+}
+
+message UpdateCategoryResponse {
+	string message = 1;
+	int64 category_id = 2;
+}
+
+message DeleteCategoryRequest {
+	int64 category_id = 1;
+}
+
+message DeleteCategoryResponse {
+	string message = 1;
+	int64 category_id = 2;
+}
+
+message FindByNameRequest {
+	string category_name = 1;
+}
+
+message CategoryResponse {
+	int64 category_id = 1;
+	string category_name = 2;
+	uint32 category_level = 3;
+	int64 category_parent = 4;
+	string category_img = 5;
+	string category_description = 6;
+}
+
+message FindByIDRequest {
+	string category_id = 1;
+}
+
+message FindByLevelRequest {
+	string level = 1;
+}
+
+message FindAllResponse {
+	repeated CategoryResponse categories = 1;
+}
+
+message FindByParentRequest {
+	string parent_id = 1;
+}
+
+message FindAllRequest {
+	string category_id = 1;
+}

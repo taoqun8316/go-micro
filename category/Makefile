@@ -8,7 +8,7 @@ init:
 
 .PHONY: proto
 proto:
-	@protoc --proto_path=. --micro_out=. --go_out=:. proto/user.proto
+	@protoc --proto_path=. --micro_out=. --go_out=:. proto/category.proto
 
 .PHONY: update
 update:
@@ -20,7 +20,7 @@ tidy:
 
 .PHONY: build
 build:
-	@go build -o user *.go
+	@go build -o category *.go
 
 .PHONY: test
 test:
@@ -28,4 +28,4 @@ test:
 
 .PHONY: docker
 docker:
-	@docker build -t user:latest .
+	@docker build -t category:latest .

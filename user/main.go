@@ -1,13 +1,11 @@
 package main
 
 import (
-
 	"user/handler"
 	pb "user/proto"
 
 	"go-micro.dev/v4"
 	"go-micro.dev/v4/logger"
-
 )
 
 var (
@@ -17,8 +15,7 @@ var (
 
 func main() {
 	// Create service
-	srv := micro.NewService(
-	)
+	srv := micro.NewService()
 	srv.Init(
 		micro.Name(service),
 		micro.Version(version),

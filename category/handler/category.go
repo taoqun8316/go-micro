@@ -68,11 +68,12 @@ func (c *Category) FindCategoryByID(ctx context.Context, request *pb.FindByIDReq
 }
 
 func (c *Category) FindCategoryByLevel(ctx context.Context, request *pb.FindByLevelRequest, response *pb.FindAllResponse) error {
-	category, err := c.CategoryDataService.FindCategoryByLevel(request.Level)
+	categories, err := c.CategoryDataService.FindCategoryByLevel(request.Level)
 	if err != nil {
 		return err
 	}
-	return common.SwapTo(category, response)
+	categoryToResponse(categories, response)
+	return nil
 }
 
 func (c *Category) FindCategoryByParent(ctx context.Context, request *pb.FindByParentRequest, response *pb.FindAllResponse) error {

@@ -54,8 +54,8 @@ func main() {
 	)
 
 	//只执行一次
-	rp := repository.NewCategoryRepository(db)
-	rp.InitTable()
+	/*rp := repository.NewCategoryRepository(db)
+	rp.InitTable()*/
 
 	categoryDataService := service.NewCategoryDataService(repository.NewCategoryRepository(db))
 

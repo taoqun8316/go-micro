@@ -23,17 +23,31 @@ func (c *Category) CreateCategory(ctx context.Context, request *pb.CategoryReque
 		return err
 	}
 	response.CategoryId = id
+	response.Message = "添加成功"
 	return nil
 }
 
 func (c *Category) UpdateCategory(ctx context.Context, request *pb.CategoryRequest, response *pb.UpdateCategoryResponse) error {
-	//TODO implement me
-	panic("implement me")
+	category := &model.Category{}
+	err := common.SwapTo(request, category)
+	if err != nil {
+		return err
+	}
+	err = c.CategoryDataService.UpdateCategory(category)
+	if err != nil {
+		return err
+	}
+	response.Message = "修改成功"
+	return nil
 }
 
 func (c *Category) DeleteCategory(ctx context.Context, request *pb.DeleteCategoryRequest, response *pb.DeleteCategoryResponse) error {
-	//TODO implement me
-	panic("implement me")
+	err := c.CategoryDataService.DeleteCategory(request.CategoryId)
+	if err != nil {
+		return err
+	}
+	response.Message = "删除成功"
+	return nil
 }
 
 func (c *Category) FindCategoryByName(ctx context.Context, request *pb.FindByNameRequest, response *pb.CategoryResponse) error {

@@ -1,10 +1,11 @@
 package main
 
 import (
-	"fmt"
 	"github.com/go-micro/plugins/v4/registry/consul"
 	"github.com/jinzhu/gorm"
+	"github.com/opentracing/opentracing-go"
 	"go-micro.dev/v4/registry"
+	"go-micro.dev/v4/util/log"
 	"product/domain/repository"
 	"product/domain/service"
 	"product/handler"
@@ -33,13 +34,22 @@ func main() {
 			"127.0.0.1:8500",
 		}
 	})
+
+	//链路跟踪
+	t, io, err := common.NewTracer("go.micro.service.product", "localhost:6831")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer io.Close()
+	opentracing.SetGlobalTracer(t)
+
 	//获取mysql配置
 	mysqlInfo := common.GetMysqlFromConsul(consulConfig, "mysql")
 
 	//创建数据库服务
 	db, err := gorm.Open("mysql", mysqlInfo.User+":"+mysqlInfo.Pwd+"@/"+mysqlInfo.Database+"?charset=utf8&parseTime=True&loc=Local")
 	if err != nil {
-		fmt.Println(err)
+		log.Fatal(err)
 	}
 	defer db.Close()
 	db.SingularTable(true)

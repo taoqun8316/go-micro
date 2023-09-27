@@ -6,6 +6,7 @@ import (
 	"cart/domain/service"
 	pb "cart/proto"
 	"context"
+	"go-micro.dev/v4/util/log"
 )
 
 type Cart struct {
@@ -13,12 +14,12 @@ type Cart struct {
 }
 
 func (c Cart) AddCart(ctx context.Context, request *pb.CartInfo, response *pb.AddResponse) error {
-	category := &model.Cart{}
-	err := common.SwapTo(request, category)
+	cart := &model.Cart{}
+	err := common.SwapTo(request, cart)
 	if err != nil {
 		return err
 	}
-	id, err := c.CartDataService.AddCart(category)
+	id, err := c.CartDataService.AddCart(cart)
 	if err != nil {
 		return err
 	}
@@ -32,7 +33,7 @@ func (c Cart) CleanCart(ctx context.Context, request *pb.Clean, response *pb.Res
 	if err != nil {
 		return err
 	}
-	response.Msg = "删除成功"
+	response.Msg = "清空成功"
 	return nil
 }
 
@@ -41,7 +42,7 @@ func (c Cart) Incr(ctx context.Context, request *pb.Item, response *pb.Response)
 	if err != nil {
 		return err
 	}
-	response.Msg = "删除成功"
+	response.Msg = "增加成功"
 	return nil
 }
 
@@ -50,7 +51,7 @@ func (c Cart) Decr(ctx context.Context, request *pb.Item, response *pb.Response)
 	if err != nil {
 		return err
 	}
-	response.Msg = "删除成功"
+	response.Msg = "扣除成功"
 	return nil
 }
 
@@ -64,9 +65,22 @@ func (c Cart) DeleteItemByID(ctx context.Context, request *pb.CartID, response *
 }
 
 func (c Cart) GetAll(ctx context.Context, request *pb.CartFindAll, response *pb.CartAll) error {
-	category, err := c.CartDataService.FindAllCart(request.UserId)
+	categories, err := c.CartDataService.FindAllCart(request.UserId)
 	if err != nil {
 		return err
 	}
-	return common.SwapTo(category, response)
+	cartToResponse(categories, response)
+	return nil
+}
+
+func cartToResponse(carts []model.Cart, response *pb.CartAll) {
+	for _, cg := range carts {
+		cr := &pb.CartInfo{}
+		err := common.SwapTo(cg, cr)
+		if err != nil {
+			log.Error(err)
+			break
+		}
+		response.CartInfo = append(response.CartInfo, cr)
+	}
 }

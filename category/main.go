@@ -17,7 +17,7 @@ import (
 )
 
 var (
-	serviceName = "category"
+	serviceName = "go.micro.service.category"
 	version     = "latest"
 )
 

@@ -4,6 +4,8 @@ go 1.18
 
 require (
 	github.com/go-micro/plugins/v4/config/source/consul v1.2.0
+	github.com/go-micro/plugins/v4/registry/consul v1.2.1
+	github.com/go-sql-driver/mysql v1.5.0
 	github.com/jinzhu/gorm v1.9.16
 	go-micro.dev/v4 v4.9.0
 	google.golang.org/protobuf v1.26.0
@@ -46,6 +48,7 @@ require (
 	github.com/mattn/go-isatty v0.0.12 // indirect
 	github.com/miekg/dns v1.1.43 // indirect
 	github.com/mitchellh/go-homedir v1.1.0 // indirect
+	github.com/mitchellh/hashstructure v1.1.0 // indirect
 	github.com/mitchellh/mapstructure v1.3.3 // indirect
 	github.com/nxadm/tail v1.4.8 // indirect
 	github.com/oxtoacart/bpool v0.0.0-20190530202638-03653db5a59c // indirect

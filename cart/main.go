@@ -1,19 +1,21 @@
 package main
 
 import (
+	"cart/common"
 	"cart/domain/repository"
 	"cart/domain/service"
 	"cart/handler"
 	pb "cart/proto"
 	"fmt"
 	"github.com/go-micro/plugins/v4/registry/consul"
-	"github.com/jinzhu/gorm"
-	"go-micro.dev/v4/registry"
-
-	"cart/common"
+	opentracing2 "github.com/go-micro/plugins/v4/wrapper/trace/opentracing"
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/jinzhu/gorm"
+	"github.com/opentracing/opentracing-go"
 	"go-micro.dev/v4"
 	"go-micro.dev/v4/logger"
+	"go-micro.dev/v4/registry"
+	"go-micro.dev/v4/util/log"
 )
 
 var (
@@ -33,6 +35,15 @@ func main() {
 			"127.0.0.1:8500",
 		}
 	})
+
+	//链路跟踪
+	t, io, err := common.NewTracer(serviceName, "localhost:6831")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer io.Close()
+	opentracing.SetGlobalTracer(t)
+
 	//获取mysql配置
 	mysqlInfo := common.GetMysqlFromConsul(consulConfig, "mysql")
 
@@ -51,6 +62,7 @@ func main() {
 		micro.Version(version),
 		micro.Address("127.0.0.1:8084"),
 		micro.Registry(consulRegistry),
+		micro.WrapHandler(opentracing2.NewHandlerWrapper(opentracing.GlobalTracer())), //绑定链路跟踪
 	)
 
 	//只执行一次

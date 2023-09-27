@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/go-micro/plugins/v4/registry/consul"
+	opentracing2 "github.com/go-micro/plugins/v4/wrapper/trace/opentracing"
 	"github.com/jinzhu/gorm"
 	"github.com/opentracing/opentracing-go"
 	"go-micro.dev/v4/registry"
@@ -14,11 +15,11 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 	"go-micro.dev/v4"
 	"go-micro.dev/v4/logger"
-	common "product/common"
+	"product/common"
 )
 
 var (
-	serviceName = "product"
+	serviceName = "go.micro.service.product"
 	version     = "latest"
 )
 
@@ -36,7 +37,7 @@ func main() {
 	})
 
 	//链路跟踪
-	t, io, err := common.NewTracer("go.micro.service.product", "localhost:6831")
+	t, io, err := common.NewTracer(serviceName, "localhost:6831")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -60,12 +61,13 @@ func main() {
 		micro.Name(serviceName),
 		micro.Version(version),
 		micro.Address("127.0.0.1:8083"),
-		micro.Registry(consulRegistry),
+		micro.Registry(consulRegistry), //添加注册中心
+		micro.WrapHandler(opentracing2.NewHandlerWrapper(opentracing.GlobalTracer())), //绑定链路跟踪
 	)
 
 	//只执行一次
-	rp := repository.NewProductRepository(db)
-	rp.InitTable()
+	/*rp := repository.NewProductRepository(db)
+	rp.InitTable()*/
 
 	productDataService := service.NewProductDataService(repository.NewProductRepository(db))
 

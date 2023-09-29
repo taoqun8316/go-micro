@@ -47,3 +47,5 @@ require (
 )
 
 replace user => ./
+
+replace common => ../common

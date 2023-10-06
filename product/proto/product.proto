@@ -21,6 +21,7 @@ message ProductInfo {
 	repeated ProductImage product_image = 6;
 	repeated ProductSize product_size = 7;
 	ProductSeo product_seo = 8;
+	int64 product_category_id = 9;
 }
 
 message ResponseProduct {

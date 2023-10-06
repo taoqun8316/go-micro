@@ -1,8 +1,8 @@
 package handler
 
 import (
+	"common"
 	"context"
-	"product/common"
 	"product/domain/model"
 	"product/domain/service"
 	pb "product/proto"

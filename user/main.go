@@ -9,7 +9,6 @@ import (
 	"github.com/jinzhu/gorm"
 	"github.com/opentracing/opentracing-go"
 	"go-micro.dev/v4/registry"
-	"go-micro.dev/v4/util/log"
 	"user/domain/repository"
 	"user/domain/service"
 	"user/handler"
@@ -42,7 +41,7 @@ func main() {
 	//链路跟踪
 	t, io, err := common.NewTracer(serviceName, "localhost:6831")
 	if err != nil {
-		log.Fatal(err)
+		logger.Fatal(err)
 	}
 	defer io.Close()
 	opentracing.SetGlobalTracer(t)
@@ -52,7 +51,7 @@ func main() {
 	srv.Init(
 		micro.Name(serviceName),
 		micro.Version(version),
-		micro.Address("127.0.0.1:8084"),
+		micro.Address("127.0.0.1:8081"),
 		micro.Registry(consulRegistry), //添加注册中心
 		micro.WrapHandler(opentracing2.NewHandlerWrapper(opentracing.GlobalTracer())), //绑定链路跟踪
 		micro.WrapHandler(ratelimiter.NewHandlerWrapper(QPS)),
@@ -81,7 +80,7 @@ func main() {
 	}
 
 	// Run service
-	if err := srv.Run(); err != nil {
+	if err = srv.Run(); err != nil {
 		logger.Fatal(err)
 	}
 }

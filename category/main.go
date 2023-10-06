@@ -1,11 +1,11 @@
 package main
 
 import (
-	common "category/common"
 	"category/domain/repository"
 	"category/domain/service"
 	"category/handler"
 	pb "category/proto"
+	"common"
 	"fmt"
 	"github.com/go-micro/plugins/v4/registry/consul"
 	ratelimiter "github.com/go-micro/plugins/v4/wrapper/ratelimiter/uber"

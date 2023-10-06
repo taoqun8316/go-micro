@@ -12,10 +12,10 @@ import (
 	"product/handler"
 	pb "product/proto"
 
+	"common"
 	_ "github.com/go-sql-driver/mysql"
 	"go-micro.dev/v4"
 	"go-micro.dev/v4/logger"
-	"product/common"
 )
 
 var (

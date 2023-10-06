@@ -5,6 +5,7 @@ go 1.18
 require (
 	common v0.0.0-00010101000000-000000000000
 	github.com/go-micro/plugins/v4/registry/consul v1.2.1
+	github.com/go-micro/plugins/v4/wrapper/ratelimiter/uber v1.2.0
 	github.com/go-micro/plugins/v4/wrapper/trace/opentracing v1.2.0
 	github.com/go-sql-driver/mysql v1.5.0
 	github.com/jinzhu/gorm v1.9.16
@@ -17,6 +18,7 @@ require (
 	github.com/Microsoft/go-winio v0.5.0 // indirect
 	github.com/ProtonMail/go-crypto v0.0.0-20210428141323-04723f9f07d7 // indirect
 	github.com/acomagu/bufpipe v1.0.3 // indirect
+	github.com/andres-erbsen/clock v0.0.0-20160526145045-9e14626cd129 // indirect
 	github.com/armon/go-metrics v0.0.0-20180917152333-f0300d1749da // indirect
 	github.com/bitly/go-simplejson v0.5.0 // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.0 // indirect
@@ -65,6 +67,7 @@ require (
 	github.com/urfave/cli/v2 v2.3.0 // indirect
 	github.com/xanzy/ssh-agent v0.3.0 // indirect
 	go.uber.org/atomic v1.11.0 // indirect
+	go.uber.org/ratelimit v0.2.0 // indirect
 	golang.org/x/crypto v0.0.0-20210513164829-c07d793c2f9a // indirect
 	golang.org/x/net v0.0.0-20210510120150-4163338589ed // indirect
 	golang.org/x/sync v0.0.0-20210220032951-036812b2e83c // indirect

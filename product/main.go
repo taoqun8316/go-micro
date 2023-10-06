@@ -1,26 +1,27 @@
 package main
 
 import (
+	"common"
 	"github.com/go-micro/plugins/v4/registry/consul"
+	ratelimiter "github.com/go-micro/plugins/v4/wrapper/ratelimiter/uber"
 	opentracing2 "github.com/go-micro/plugins/v4/wrapper/trace/opentracing"
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
 	"github.com/opentracing/opentracing-go"
+	"go-micro.dev/v4"
+	"go-micro.dev/v4/logger"
 	"go-micro.dev/v4/registry"
 	"go-micro.dev/v4/util/log"
 	"product/domain/repository"
 	"product/domain/service"
 	"product/handler"
 	pb "product/proto"
-
-	"common"
-	_ "github.com/go-sql-driver/mysql"
-	"go-micro.dev/v4"
-	"go-micro.dev/v4/logger"
 )
 
 var (
 	serviceName = "go.micro.service.product"
 	version     = "latest"
+	QPS         = 100
 )
 
 func main() {
@@ -63,6 +64,7 @@ func main() {
 		micro.Address("127.0.0.1:8083"),
 		micro.Registry(consulRegistry), //添加注册中心
 		micro.WrapHandler(opentracing2.NewHandlerWrapper(opentracing.GlobalTracer())), //绑定链路跟踪
+		micro.WrapHandler(ratelimiter.NewHandlerWrapper(QPS)),
 	)
 
 	//只执行一次
